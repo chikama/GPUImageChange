@@ -2,9 +2,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import "GPUImageContext.h"
 
-extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
+extern NSString *const kTHImageColorSwizzlingFragmentShaderString;
 
-@protocol GPUImageMovieWriterDelegate <NSObject>
+@protocol THImageMovieWriterDelegate <NSObject>
 
 @optional
 - (void)movieRecordingCompleted;
@@ -12,7 +12,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 
 @end
 
-@interface GPUImageMovieWriter : NSObject <GPUImageInput>
+@interface THImageMovieWriter: NSObject <GPUImageInput>
 {
     BOOL alreadyFinishedRecording;
     
@@ -21,7 +21,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 	AVAssetWriter *assetWriter;
 	AVAssetWriterInput *assetWriterAudioInput;
 	AVAssetWriterInput *assetWriterVideoInput;
-    AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
+
     
     GPUImageContext *_movieWriterContext;
     CVPixelBufferRef renderTarget;
@@ -36,7 +36,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @property(readwrite, nonatomic) BOOL shouldInvalidateAudioSampleWhenDone;
 @property(nonatomic, copy) void(^completionBlock)(void);
 @property(nonatomic, copy) void(^failureBlock)(NSError*);
-@property(nonatomic, assign) id<GPUImageMovieWriterDelegate> delegate;
+@property(nonatomic, assign) id<THImageMovieWriterDelegate> delegate;
 @property(readwrite, nonatomic) BOOL encodingLiveVideo;
 @property(nonatomic, copy) BOOL(^videoInputReadyCallback)(void);
 @property(nonatomic, copy) BOOL(^audioInputReadyCallback)(void);
@@ -50,8 +50,8 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @property(nonatomic, retain) GPUImageContext *movieWriterContext;
 
 // Initialization and teardown
-- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
-- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings;
+- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize movies:(NSArray *)movies;
+- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings movies:(NSArray *)movies;
 
 - (void)setHasAudioTrack:(BOOL)hasAudioTrack audioSettings:(NSDictionary *)audioOutputSettings;
 
@@ -63,5 +63,11 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 - (void)cancelRecording;
 - (void)processAudioBuffer:(CMSampleBufferRef)audioBuffer;
 - (void)enableSynchronizationCallbacks;
+
+//===
+@property(nonatomic) CGFloat audioWroteDuration, videoWroteDuration;
+@property(nonatomic) CGFloat firstVideoFrameTime;
+
+@property(nonatomic, retain) AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
 
 @end

@@ -1,9 +1,10 @@
-#import "GPUImageMovie.h"
+#import "THImageMovie.h"
 #import "GPUImageMovieWriter.h"
 #import "GPUImageFilter.h"
 #import "GPUImageVideoCamera.h"
+#import "THImageMovieManager.h"
 
-@interface GPUImageMovie () <AVPlayerItemOutputPullDelegate>
+@interface THImageMovie () <AVPlayerItemOutputPullDelegate>
 {
     BOOL audioEncodingIsFinished, videoEncodingIsFinished;
     GPUImageMovieWriter *synchronizedMovieWriter;
@@ -25,13 +26,17 @@
     BOOL isFullYUVRange;
 
     int imageBufferWidth, imageBufferHeight;
+
+    AVAssetReaderOutput *readerVideoTrackOutput;
 }
 
 - (void)processAsset;
 
 @end
 
-@implementation GPUImageMovie
+@implementation
+
+THImageMovie
 
 @synthesize url = _url;
 @synthesize asset = _asset;
@@ -153,6 +158,7 @@
 
 - (void)startProcessing
 {
+    dispatch_group_enter([THImageMovieManager shared].readingAllReadyDispatchGroup);
     if( self.playerItem ) {
         [self processPlayerItem];
         return;
@@ -171,7 +177,7 @@
     NSDictionary *inputOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:AVURLAssetPreferPreciseDurationAndTimingKey];
     AVURLAsset *inputAsset = [[AVURLAsset alloc] initWithURL:self.url options:inputOptions];
     
-    GPUImageMovie __block *blockSelf = self;
+    THImageMovie __block *blockSelf = self;
     
     [inputAsset loadValuesAsynchronouslyForKeys:[NSArray arrayWithObject:@"tracks"] completionHandler: ^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -204,7 +210,7 @@
     }
     
     // Maybe set alwaysCopiesSampleData to NO on iOS 5.0 for faster video decoding
-    AVAssetReaderTrackOutput *readerVideoTrackOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:[[self.asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] outputSettings:outputSettings];
+    readerVideoTrackOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:[[self.asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] outputSettings:outputSettings];
     readerVideoTrackOutput.alwaysCopiesSampleData = NO;
     [assetReader addOutput:readerVideoTrackOutput];
 
@@ -230,7 +236,7 @@
 {
     reader = [self createAssetReader];
 
-    AVAssetReaderOutput *readerVideoTrackOutput = nil;
+
     AVAssetReaderOutput *readerAudioTrackOutput = nil;
 
     audioEncodingIsFinished = YES;
@@ -250,48 +256,76 @@
         return;
     }
 
-    __unsafe_unretained GPUImageMovie *weakSelf = self;
+    //__unsafe_unretained THImageMovie *weakSelf = self;
+//
+//    if (synchronizedMovieWriter != nil)
+//    {
+//        [synchronizedMovieWriter setVideoInputReadyCallback:^{
+//            return [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
+//        }];
+//
+//        [synchronizedMovieWriter setAudioInputReadyCallback:^{
+//            return [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
+//        }];
+//
+//        [synchronizedMovieWriter enableSynchronizationCallbacks];
+//    }
+//    else
+//    {
+        dispatch_group_leave([THImageMovieManager shared].readingAllReadyDispatchGroup);
+//        while (reader.status == AVAssetReaderStatusReading && (!_shouldRepeat || keepLooping))
+//        {
+//                [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
+//
+//            if ( (readerAudioTrackOutput) && (!audioEncodingIsFinished) )
+//            {
+//                    [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
+//            }
+//
+//        }
+//
+//        if (reader.status == AVAssetReaderStatusCompleted) {
+//
+//            [reader cancelReading];
+//
+//            if (keepLooping) {
+//                reader = nil;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self startProcessing];
+//                });
+//            } else {
+//                [weakSelf endProcessing];
+//            }
+//
+//        }
+//    }
+}
 
-    if (synchronizedMovieWriter != nil)
+- (BOOL)renderNextFrame {
+    __unsafe_unretained THImageMovie *weakSelf = self;
+    if (reader.status == AVAssetReaderStatusReading && (!_shouldRepeat || keepLooping))
     {
-        [synchronizedMovieWriter setVideoInputReadyCallback:^{
-            return [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
-        }];
 
-        [synchronizedMovieWriter setAudioInputReadyCallback:^{
-            return [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
-        }];
-
-        [synchronizedMovieWriter enableSynchronizationCallbacks];
+        return [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
     }
-    else
-    {
-        while (reader.status == AVAssetReaderStatusReading && (!_shouldRepeat || keepLooping))
-        {
-                [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
 
-            if ( (readerAudioTrackOutput) && (!audioEncodingIsFinished) )
-            {
-                    [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
-            }
+    if (reader.status == AVAssetWriterStatusCompleted) {
+        NSLog(@"movie: %@ reading is done", self.url.lastPathComponent);
+        [reader cancelReading];
 
-        }
+        [weakSelf endProcessing];
+//        if (keepLooping) {
+//            reader = nil;
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self startProcessing];
+//            });
+//        } else {
+//            [weakSelf endProcessing];
+//        }
 
-        if (reader.status == AVAssetReaderStatusCompleted) {
-                
-            [reader cancelReading];
-
-            if (keepLooping) {
-                reader = nil;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self startProcessing];
-                });
-            } else {
-                [weakSelf endProcessing];
-            }
-
-        }
     }
+
+    return NO;
 }
 
 - (void)processPlayerItem
@@ -336,7 +370,7 @@
 	CMTime outputItemTime = [playerItemOutput itemTimeForHostTime:nextVSync];
 
 	if ([playerItemOutput hasNewPixelBufferForItemTime:outputItemTime]) {
-        __unsafe_unretained GPUImageMovie *weakSelf = self;
+        __unsafe_unretained THImageMovie *weakSelf = self;
 		CVPixelBufferRef pixelBuffer = [playerItemOutput copyPixelBufferForItemTime:outputItemTime itemTimeForDisplay:NULL];
         if( pixelBuffer )
             runSynchronouslyOnVideoProcessingQueue(^{
@@ -346,11 +380,11 @@
 	}
 }
 
-- (BOOL)readNextVideoFrameFromOutput:(AVAssetReaderOutput *)readerVideoTrackOutput;
+- (BOOL)readNextVideoFrameFromOutput:(AVAssetReaderOutput *)pReaderVideoTrackOutput;
 {
     if (reader.status == AVAssetReaderStatusReading && ! videoEncodingIsFinished)
     {
-        CMSampleBufferRef sampleBufferRef = [readerVideoTrackOutput copyNextSampleBuffer];
+        CMSampleBufferRef sampleBufferRef = [pReaderVideoTrackOutput copyNextSampleBuffer];
         if (sampleBufferRef) 
         {
             //NSLog(@"read a video frame: %@", CFBridgingRelease(CMTimeCopyDescription(kCFAllocatorDefault, CMSampleBufferGetOutputPresentationTimeStamp(sampleBufferRef))));
@@ -373,7 +407,7 @@
                 previousActualFrameTime = CFAbsoluteTimeGetCurrent();
             }
 
-            __unsafe_unretained GPUImageMovie *weakSelf = self;
+            __unsafe_unretained THImageMovie *weakSelf = self;
             runSynchronouslyOnVideoProcessingQueue(^{
                 [weakSelf processMovieFrame:sampleBufferRef];
                 CMSampleBufferInvalidate(sampleBufferRef);
@@ -387,7 +421,7 @@
             if (!keepLooping) {
                 videoEncodingIsFinished = YES;
                 if( videoEncodingIsFinished && audioEncodingIsFinished )
-                    [self endProcessing];
+                    return NO;
             }
         }
     }
@@ -395,7 +429,7 @@
     {
         if (reader.status == AVAssetReaderStatusCompleted)
         {
-            [self endProcessing];
+            return NO;
         }
     }
     return NO;
@@ -675,11 +709,11 @@
 {
     keepLooping = NO;
     [displayLink setPaused:YES];
-
-    for (id<GPUImageInput> currentTarget in targets)
-    {
-        [currentTarget endProcessing];
-    }
+//
+//    for (id<GPUImageInput> currentTarget in targets)
+//    {
+//        //[currentTarget endProcessing];
+//    }
     
     if (synchronizedMovieWriter != nil)
     {
