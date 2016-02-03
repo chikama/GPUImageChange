@@ -375,6 +375,10 @@
         [GPUImageContext setActiveShaderProgram:displayProgram];
         [self setDisplayFramebuffer];
         
+        glBlendColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glBlendFunc(GL_SRC_ALPHA,GL_CONSTANT_COLOR);
+        glEnable(GL_BLEND);
+        
         glClearColor(backgroundColorRed, backgroundColorGreen, backgroundColorBlue, backgroundColorAlpha);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
