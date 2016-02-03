@@ -710,6 +710,12 @@
 		C2EDA90715BB136D007CBA0F /* GPUImageHueFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C2EDA90515BB136D007CBA0F /* GPUImageHueFilter.m */; };
 		D443237A17C81C0C00204484 /* GPUImageMovieComposition.h in Headers */ = {isa = PBXBuildFile; fileRef = D443237817C81C0C00204484 /* GPUImageMovieComposition.h */; };
 		D443237B17C81C0C00204484 /* GPUImageMovieComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = D443237917C81C0C00204484 /* GPUImageMovieComposition.m */; };
+		DF22FE3E1C6293750030B40E /* THImageMovie.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE3A1C6293750030B40E /* THImageMovie.h */; };
+		DF22FE3F1C6293750030B40E /* THImageMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE3B1C6293750030B40E /* THImageMovie.m */; };
+		DF22FE401C6293750030B40E /* THImageMovieManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE3C1C6293750030B40E /* THImageMovieManager.h */; };
+		DF22FE411C6293750030B40E /* THImageMovieManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE3D1C6293750030B40E /* THImageMovieManager.m */; };
+		DF22FE441C6293C30030B40E /* THImageMovieWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE421C6293C30030B40E /* THImageMovieWriter.h */; };
+		DF22FE451C6293C30030B40E /* THImageMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE431C6293C30030B40E /* THImageMovieWriter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1065,6 +1071,12 @@
 		C2EDA90515BB136D007CBA0F /* GPUImageHueFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPUImageHueFilter.m; path = Source/GPUImageHueFilter.m; sourceTree = SOURCE_ROOT; };
 		D443237817C81C0C00204484 /* GPUImageMovieComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPUImageMovieComposition.h; path = Source/GPUImageMovieComposition.h; sourceTree = SOURCE_ROOT; };
 		D443237917C81C0C00204484 /* GPUImageMovieComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPUImageMovieComposition.m; path = Source/GPUImageMovieComposition.m; sourceTree = SOURCE_ROOT; };
+		DF22FE3A1C6293750030B40E /* THImageMovie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THImageMovie.h; path = Source/THImageMovie.h; sourceTree = SOURCE_ROOT; };
+		DF22FE3B1C6293750030B40E /* THImageMovie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THImageMovie.m; path = Source/THImageMovie.m; sourceTree = SOURCE_ROOT; };
+		DF22FE3C1C6293750030B40E /* THImageMovieManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THImageMovieManager.h; path = Source/THImageMovieManager.h; sourceTree = SOURCE_ROOT; };
+		DF22FE3D1C6293750030B40E /* THImageMovieManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THImageMovieManager.m; path = Source/THImageMovieManager.m; sourceTree = SOURCE_ROOT; };
+		DF22FE421C6293C30030B40E /* THImageMovieWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = THImageMovieWriter.h; path = Source/iOS/THImageMovieWriter.h; sourceTree = SOURCE_ROOT; };
+		DF22FE431C6293C30030B40E /* THImageMovieWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = THImageMovieWriter.m; path = Source/iOS/THImageMovieWriter.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1339,6 +1351,10 @@
 			children = (
 				BCB5E77D14E22E4200701302 /* GPUImageOutput.h */,
 				BCB5E77E14E22E4200701302 /* GPUImageOutput.m */,
+				DF22FE3A1C6293750030B40E /* THImageMovie.h */,
+				DF22FE3B1C6293750030B40E /* THImageMovie.m */,
+				DF22FE3C1C6293750030B40E /* THImageMovieManager.h */,
+				DF22FE3D1C6293750030B40E /* THImageMovieManager.m */,
 				BCB5E76314E208D600701302 /* GPUImageVideoCamera.h */,
 				BCB5E76414E208D600701302 /* GPUImageVideoCamera.m */,
 				BC7D95D31523EE67000DF037 /* GPUImageStillCamera.h */,
@@ -1367,6 +1383,8 @@
 			isa = PBXGroup;
 			children = (
 				BCB5E75A14E2086300701302 /* GPUImageView.h */,
+				DF22FE421C6293C30030B40E /* THImageMovieWriter.h */,
+				DF22FE431C6293C30030B40E /* THImageMovieWriter.m */,
 				BCB5E75B14E2086300701302 /* GPUImageView.m */,
 				BC1B727F14FB16AF00ACA2AB /* GPUImageMovieWriter.h */,
 				BC1B728014FB16AF00ACA2AB /* GPUImageMovieWriter.m */,
@@ -1798,6 +1816,7 @@
 				BC73FC021944008500671325 /* GPUImageFramework.h in Headers */,
 				BCC1E633152239090006EFA5 /* GPUImageBulgeDistortionFilter.h in Headers */,
 				BCC1E638152243630006EFA5 /* GPUImagePinchDistortionFilter.h in Headers */,
+				DF22FE3E1C6293750030B40E /* THImageMovie.h in Headers */,
 				BCC1E66B152368130006EFA5 /* GPUImageCGAColorspaceFilter.h in Headers */,
 				BCC1E66D152368130006EFA5 /* GPUImageCrosshatchFilter.h in Headers */,
 				BC7D95D51523EE67000DF037 /* GPUImageStillCamera.h in Headers */,
@@ -1838,6 +1857,7 @@
 				BCAD4C9E156F0D8F001E50E1 /* GPUImageShiTomasiFeatureDetectionFilter.h in Headers */,
 				BCAD4CA3156F0F35001E50E1 /* GPUImageNobleCornerDetectionFilter.h in Headers */,
 				BCAD4D0F15718AD2001E50E1 /* GPUImageSingleComponentGaussianBlurFilter.h in Headers */,
+				DF22FE441C6293C30030B40E /* THImageMovieWriter.h in Headers */,
 				BCAD4D1415718F9E001E50E1 /* GPUImageDirectionalSobelEdgeDetectionFilter.h in Headers */,
 				BCAD4D1C1571B410001E50E1 /* GPUImageDirectionalNonMaximumSuppressionFilter.h in Headers */,
 				BCAD4D201571CB50001E50E1 /* GPUImageWeakPixelInclusionFilter.h in Headers */,
@@ -1877,6 +1897,7 @@
 				BCB79E7A15EC2A8400965D92 /* GPUImageAverageLuminanceThresholdFilter.h in Headers */,
 				BC99234E15EFFC8700ED2C8C /* GPUImageChromaKeyFilter.h in Headers */,
 				BC99235315EFFC9700ED2C8C /* GPUImageWhiteBalanceFilter.h in Headers */,
+				DF22FE401C6293750030B40E /* THImageMovieManager.h in Headers */,
 				BCB3B46515F2BA9300EDA3BE /* GPUImageLowPassFilter.h in Headers */,
 				BCB3B46A15F2FD1B00EDA3BE /* GPUImageHighPassFilter.h in Headers */,
 				BCB3B47915F3108700EDA3BE /* GPUImageMotionDetector.h in Headers */,
@@ -2207,6 +2228,7 @@
 				BC982BEE14F1CE600001FF6F /* GPUImageMultiplyBlendFilter.m in Sources */,
 				BC982C4814F29E580001FF6F /* GPUImageKuwaharaFilter.m in Sources */,
 				BC982C6F14F33C2A0001FF6F /* GPUImageMovie.m in Sources */,
+				DF22FE411C6293750030B40E /* THImageMovieManager.m in Sources */,
 				BC982C7114F33C2A0001FF6F /* GPUImageOverlayBlendFilter.m in Sources */,
 				BC982C8214F34F0C0001FF6F /* GPUImageDarkenBlendFilter.m in Sources */,
 				BC982C8414F34F0C0001FF6F /* GPUImageLightenBlendFilter.m in Sources */,
@@ -2300,6 +2322,7 @@
 				BC0690DE157C344D009274F9 /* GPUImageRGBClosingFilter.m in Sources */,
 				BC0690F8157C5075009274F9 /* GPUImageColorPackingFilter.m in Sources */,
 				BC76CE9C15813818008B45D3 /* GPUImageSphereRefractionFilter.m in Sources */,
+				DF22FE451C6293C30030B40E /* THImageMovieWriter.m in Sources */,
 				BCBCE99A1595021B00E0ED33 /* GPUImageMonochromeFilter.m in Sources */,
 				BCBCE9D6159944AC00E0ED33 /* GPUImageBuffer.m in Sources */,
 				BCF6B41215A7849F00FC6F58 /* GPUImageOpacityFilter.m in Sources */,
@@ -2308,6 +2331,7 @@
 				C2EDA90715BB136D007CBA0F /* GPUImageHueFilter.m in Sources */,
 				B81F2D761788C95500118374 /* GPUImageHSBFilter.m in Sources */,
 				BC0147E515BEFE6800FC2B6D /* GPUImageGlassSphereFilter.m in Sources */,
+				DF22FE3F1C6293750030B40E /* THImageMovie.m in Sources */,
 				96DD3C1515C2780500DF637E /* GPUImageLookupFilter.m in Sources */,
 				96781B3015C38DCF005FA0D7 /* GPUImageAmatorkaFilter.m in Sources */,
 				96781B3515C39E80005FA0D7 /* GPUImageMissEtikateFilter.m in Sources */,
