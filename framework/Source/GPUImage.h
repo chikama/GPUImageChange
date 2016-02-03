@@ -20,11 +20,6 @@
 #import "GPUImageFramebuffer.h"
 #import "GPUImageFramebufferCache.h"
 
-// TH
-#import "THImageMovie.h"
-#import "THImageMovieWriter.h"
-#import "THImageMovieManager.h"
-
 // Filters
 #import "GPUImageFilter.h"
 #import "GPUImageTwoInputFilter.h"
