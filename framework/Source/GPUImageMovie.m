@@ -240,10 +240,10 @@
 - (void)processAsset
 {
     reader = [self createAssetReader];
-
-    AVAssetReaderOutput *readerVideoTrackOutput = nil;
+    
+    
     AVAssetReaderOutput *readerAudioTrackOutput = nil;
-
+    
     audioEncodingIsFinished = YES;
     for( AVAssetReaderOutput *output in reader.outputs ) {
         if( [output.mediaType isEqualToString:AVMediaTypeAudio] ) {
@@ -254,62 +254,15 @@
             readerVideoTrackOutput = output;
         }
     }
-
-    if ([reader startReading] == NO) 
+    
+    if ([reader startReading] == NO)
     {
-            NSLog(@"Error reading from file at URL: %@", self.url);
+        NSLog(@"Error reading from file at URL: %@", self.url);
         return;
     }
-
-    __unsafe_unretained GPUImageMovie *weakSelf = self;
-
-    if (synchronizedMovieWriter != nil)
-    {
-        [synchronizedMovieWriter setVideoInputReadyCallback:^{
-            BOOL success = [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-            return success;
-#endif
-        }];
-
-        [synchronizedMovieWriter setAudioInputReadyCallback:^{
-            BOOL success = [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-            return success;
-#endif
-        }];
-        
-        [synchronizedMovieWriter enableSynchronizationCallbacks];
-
-    }
-    else
-    {
-        while (reader.status == AVAssetReaderStatusReading && (!_shouldRepeat || keepLooping))
-        {
-                [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
-
-            if ( (readerAudioTrackOutput) && (!audioEncodingIsFinished) )
-            {
-                    [weakSelf readNextAudioSampleFromOutput:readerAudioTrackOutput];
-            }
-
-        }
-
-        if (reader.status == AVAssetReaderStatusCompleted) {
-                
-            [reader cancelReading];
-
-            if (keepLooping) {
-                reader = nil;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self startProcessing];
-                });
-            } else {
-                [weakSelf endProcessing];
-            }
-
-        }
-    }
+    
+    //============================We delete all the code left, just signify that I'm done with asset warming up, ready to be processed
+    dispatch_group_leave([THImageMovieManager shared].readingAllReadyDispatchGroup);
 }
 
 - (void)processPlayerItem
@@ -855,6 +808,23 @@ static CVReturn renderCallback(CVDisplayLinkRef displayLink,
 	glVertexAttribPointer(yuvConversionTextureCoordinateAttribute, 2, GL_FLOAT, 0, 0, textureCoordinates);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+- (BOOL)renderNextFrame {
+    __unsafe_unretained THImageMovie *weakSelf = self;
+    if (reader.status == AVAssetReaderStatusReading && (!_shouldRepeat || keepLooping))
+    {
+        
+        return [weakSelf readNextVideoFrameFromOutput:readerVideoTrackOutput];
+    }
+    
+    if (reader.status == AVAssetWriterStatusCompleted) {
+        NSLog(@"movie: %@ reading is done", self.url.lastPathComponent);
+        [reader cancelReading];
+        [weakSelf endProcessing];
+    }
+    
+    return NO;
 }
 
 - (AVAssetReader*)assetReader {

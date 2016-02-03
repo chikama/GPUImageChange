@@ -21,7 +21,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 	AVAssetWriter *assetWriter;
 	AVAssetWriterInput *assetWriterAudioInput;
 	AVAssetWriterInput *assetWriterVideoInput;
-    AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
+    //AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
     
     GPUImageContext *_movieWriterContext;
     CVPixelBufferRef renderTarget;
@@ -48,9 +48,11 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @property(nonatomic, copy) NSArray *metaData;
 @property(nonatomic, assign, getter = isPaused) BOOL paused;
 @property(nonatomic, retain) GPUImageContext *movieWriterContext;
+@property(nonatomic, retain) AVAssetWriterInputPixelBufferAdaptor *assetWriterPixelBufferInput;
 
 // Initialization and teardown
 - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize;
+- (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize movies:(NSArray *)movies;
 - (id)initWithMovieURL:(NSURL *)newMovieURL size:(CGSize)newSize fileType:(NSString *)newFileType outputSettings:(NSDictionary *)outputSettings;
 
 - (void)setHasAudioTrack:(BOOL)hasAudioTrack audioSettings:(NSDictionary *)audioOutputSettings;
