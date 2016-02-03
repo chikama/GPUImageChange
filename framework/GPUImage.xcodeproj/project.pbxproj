@@ -716,6 +716,12 @@
 		DF22FE411C6293750030B40E /* THImageMovieManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE3D1C6293750030B40E /* THImageMovieManager.m */; };
 		DF22FE441C6293C30030B40E /* THImageMovieWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE421C6293C30030B40E /* THImageMovieWriter.h */; };
 		DF22FE451C6293C30030B40E /* THImageMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE431C6293C30030B40E /* THImageMovieWriter.m */; };
+		DF65B1661C62A5BA006ED6DC /* THImageMovie.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE3A1C6293750030B40E /* THImageMovie.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DF65B1671C62A5BA006ED6DC /* THImageMovieManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE3C1C6293750030B40E /* THImageMovieManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DF65B1681C62A5BA006ED6DC /* THImageMovieWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = DF22FE421C6293C30030B40E /* THImageMovieWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DF65B1691C62A5D2006ED6DC /* THImageMovie.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE3B1C6293750030B40E /* THImageMovie.m */; };
+		DF65B16A1C62A5D2006ED6DC /* THImageMovieManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE3D1C6293750030B40E /* THImageMovieManager.m */; };
+		DF65B16B1C62A5D2006ED6DC /* THImageMovieWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = DF22FE431C6293C30030B40E /* THImageMovieWriter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1746,6 +1752,9 @@
 				BCD81F2C194404F8007133DB /* GPUImageRawDataOutput.h in Headers */,
 				BC3AA4B21C11104B003B7561 /* GPUImageColourFASTFeatureDetector.h in Headers */,
 				BC3AA4B31C11104E003B7561 /* GPUImageColourFASTSamplingOperation.h in Headers */,
+				DF65B1661C62A5BA006ED6DC /* THImageMovie.h in Headers */,
+				DF65B1671C62A5BA006ED6DC /* THImageMovieManager.h in Headers */,
+				DF65B1681C62A5BA006ED6DC /* THImageMovieWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2033,6 +2042,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF65B1691C62A5D2006ED6DC /* THImageMovie.m in Sources */,
+				DF65B16A1C62A5D2006ED6DC /* THImageMovieManager.m in Sources */,
+				DF65B16B1C62A5D2006ED6DC /* THImageMovieWriter.m in Sources */,
 				BC57608019441E610096FFA5 /* GPUImageContext.m in Sources */,
 				BCD81F2D19440604007133DB /* GLProgram.m in Sources */,
 				BCD81F2F19440604007133DB /* GPUImageFramebuffer.m in Sources */,

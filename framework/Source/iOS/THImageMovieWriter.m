@@ -42,7 +42,7 @@ NSString *const kTHImageColorSwizzlingFragmentShaderString = SHADER_STRING
 @property(nonatomic, strong) AVAssetReader *assetAudioReader;
 @property(nonatomic, strong) AVAssetReaderAudioMixOutput *assetAudioReaderTrackOutput;
 
-@property(nonatomic, assign) dispatch_group_t recordingDispatchGroup;
+@property(nonatomic) dispatch_group_t recordingDispatchGroup;
 @property(nonatomic, assign) BOOL audioFinished, videoFinished, isFrameRecieved;
 @property(nonatomic, copy)  void (^onFramePixelBufferReceived)(CMTime, CVPixelBufferRef);
 
@@ -320,7 +320,7 @@ NSString *const kTHImageColorSwizzlingFragmentShaderString = SHADER_STRING
 
 
 - (void)setupAudioAssetWriter{
-    double preferredHardwareSampleRate = [[AVAudioSession sharedInstance] currentHardwareSampleRate];
+    double preferredHardwareSampleRate = [[AVAudioSession sharedInstance] sampleRate];
 
     AudioChannelLayout acl;
     bzero( &acl, sizeof(acl));
