@@ -16,4 +16,6 @@
 // sets the anchor point to top left corner
 @property(readwrite, nonatomic) BOOL anchorTopLeft;
 
+- (void)setAffineTransform:(CGAffineTransform)newValue;
+
 @end
