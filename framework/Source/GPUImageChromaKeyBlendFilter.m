@@ -4,7 +4,7 @@
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 NSString *const kGPUImageChromaKeyBlendFragmentShaderString = SHADER_STRING
-( 
+(
  precision highp float;
  
  varying highp vec2 textureCoordinate;
@@ -32,9 +32,6 @@ NSString *const kGPUImageChromaKeyBlendFragmentShaderString = SHADER_STRING
 //     float blendValue = 1.0 - smoothstep(thresholdSensitivity - smoothing, thresholdSensitivity , abs(Cr - maskCr) + abs(Cb - maskCb));
      float blendValue = 1.0 - smoothstep(thresholdSensitivity, thresholdSensitivity + smoothing, distance(vec2(Cr, Cb), vec2(maskCr, maskCb)));
      gl_FragColor = mix(textureColor, textureColor2, blendValue);
-
-     gl_Position = transformMatrix * vec4(position.xyz, 1.0) * orthographicMatrix;
-     textureCoordinate = inputTextureCoordinate.xy;
  }
 );
 #else
