@@ -89,11 +89,6 @@ NSString *const kGPUImageChromaKeyBlendFragmentShaderString = SHADER_STRING
     self.smoothing = 0.1;
     [self setColorToReplaceRed:0.0 green:1.0 blue:0.0];
     
-    transformMatrixUniform = [filterProgram uniformIndex:@"transformMatrix"];
-    orthographicMatrixUniform = [filterProgram uniformIndex:@"orthographicMatrix"];
-    
-    self.transform3D = CATransform3DIdentity;
-    
     return self;
 }
 
